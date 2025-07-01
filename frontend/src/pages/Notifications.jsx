@@ -2,6 +2,8 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 
+const API_BASE_URL = process.env.REACT_APP_API_BASE_URL;
+
 const Notifications = () => {
   const [notifications, setNotifications] = useState([]);
   const navigate = useNavigate();
@@ -15,7 +17,7 @@ const Notifications = () => {
       }
 
       try {
-        const res = await axios.get("http://localhost:5000/api/notifications", {
+        const res = await axios.get(`${API_BASE_URL}/notifications`, {
           headers: { Authorization: `Bearer ${token}` }
         });
 
@@ -24,7 +26,7 @@ const Notifications = () => {
           res.data.map(async (notif) => {
             const jobs = await Promise.all(
               notif.jobs.map(async (jobId) => {
-                const jobRes = await axios.get(`http://localhost:5000/api/jobs/${jobId}`);
+                const jobRes = await axios.get(`${API_BASE_URL}/jobs/${jobId}`);
                 return jobRes.data.job;
               })
             );

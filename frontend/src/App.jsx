@@ -3,6 +3,8 @@ import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import AIAgentChat from "./components/AIAgentChat.jsx";
 
+const API_BASE_URL = process.env.REACT_APP_API_BASE_URL;
+
 function App() {
   const [title, setTitle] = useState("");
   const [city, setCity] = useState("");
@@ -19,13 +21,13 @@ function App() {
     }
     try {
       const prompt = `${title} in ${city}`;
-      const res = await axios.post("http://localhost:5000/api/ai/search", { prompt });
+      const res = await axios.post(`${API_BASE_URL}/ai/search`, { prompt });
       setJobs(res.data);
 
       const token = localStorage.getItem("access_token");
       if (token) {
         await axios.post(
-          "http://localhost:5000/api/search",
+          `${API_BASE_URL}/search`,
           { keyword: title, city: city },
           { headers: { Authorization: `Bearer ${token}` } }
         );
@@ -40,7 +42,7 @@ function App() {
     const token = localStorage.getItem("access_token");
     if (!token) return;
     try {
-      const res = await axios.get("http://localhost:5000/api/search/history", {
+      const res = await axios.get(`${API_BASE_URL}/search/history`, {
         headers: { Authorization: `Bearer ${token}` },
       });
       setHistory(res.data);
@@ -51,7 +53,7 @@ function App() {
 
   const fetchAutocomplete = async (field, value) => {
     if (value.length < 2) return;
-    const res = await axios.get(`http://localhost:5000/api/autocomplete?field=${field}&query=${value}`);
+    const res = await axios.get(`${API_BASE_URL}/autocomplete?field=${field}&query=${value}`);
     console.log("Suggestions:", res.data);
   };
 
@@ -61,7 +63,7 @@ function App() {
 
   const applyFilters = async () => {
     const params = new URLSearchParams(filters).toString();
-    const res = await axios.get(`http://localhost:5000/api/jobs?${params}`);
+    const res = await axios.get(`${API_BASE_URL}/jobs?${params}`);
     setJobs(res.data);
   };
 

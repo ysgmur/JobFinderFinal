@@ -1,6 +1,8 @@
 import React, { useState } from "react";
 import axios from "axios";
 
+const API_BASE_URL = process.env.REACT_APP_API_BASE_URL;
+
 function PostJob() {
   const [formData, setFormData] = useState({
     title: "",
@@ -23,7 +25,7 @@ function PostJob() {
     e.preventDefault();
     const token = localStorage.getItem("access_token");
     try {
-      const res = await axios.post("http://localhost:5000/api/jobs", formData, {
+      const res = await axios.post(`${API_BASE_URL}/jobs`, formData, {
         headers: { Authorization: `Bearer ${token}` }
       });
       alert("İlan başarıyla eklendi!");

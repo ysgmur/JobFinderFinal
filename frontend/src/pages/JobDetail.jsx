@@ -1,7 +1,8 @@
-// 📁 src/pages/JobDetail.jsx
 import React, { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import axios from "axios";
+
+const API_BASE_URL = process.env.REACT_APP_API_BASE_URL;
 
 const JobDetail = () => {
   const { id } = useParams();
@@ -16,7 +17,7 @@ const JobDetail = () => {
 
   const fetchJobDetail = async () => {
     try {
-      const res = await axios.get(`http://localhost:5000/api/jobs/${id}`);
+      const res = await axios.get(`${API_BASE_URL}/jobs/${id}`);
       setJob(res.data.job);
       setRelatedJobs(res.data.related_jobs);
     } catch (error) {
@@ -35,7 +36,7 @@ const JobDetail = () => {
     }
     try {
       await axios.post(
-        `http://localhost:5000/api/apply/${job._id}`,
+        `${API_BASE_URL}/apply/${job._id}`,
         {},
         { headers: { Authorization: `Bearer ${token}` } }
       );
