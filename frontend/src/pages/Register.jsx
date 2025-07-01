@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 
-const API_BASE_URL = process.env.REACT_APP_API_BASE_URL;
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
 function Register() {
   const [username, setUsername] = useState("");
@@ -11,20 +11,19 @@ function Register() {
   const navigate = useNavigate();
 
   const handleRegister = async (e) => {
-    e.preventDefault();
-    try {
-      await axios.post(`${API_BASE_URL}/register`, {
-        username,
-        email,
-        password,
-      });
-      alert("Kayıt başarılı! Giriş sayfasına yönlendiriliyorsunuz.");
-      navigate("/login");
-    } catch (err) {
-      alert("Kayıt başarısız. Kullanıcı adı alınmış olabilir.");
-    }
-  };
-
+  e.preventDefault();
+  try {
+    await axios.post(`${API_BASE_URL}/register`, {
+      username,
+      email,
+      password,
+    });
+    alert("Kayıt başarılı! Giriş sayfasına yönlendiriliyorsunuz.");
+    navigate("/login");
+  } catch (err) {
+    alert("Kayıt başarısız. Kullanıcı adı alınmış olabilir.");
+  }
+};
   return (
     <div style={{ maxWidth: 400, margin: "auto", padding: 20 }}>
       <h2>Kayıt Ol</h2>
